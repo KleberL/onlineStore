@@ -44,7 +44,7 @@ const CheckoutSideMenu = () => {
                 key={product.id}
                 id={product.id}
                 title={product.title} 
-                images={product.images}
+                image={product.image}
                 price={product.price}
                 handleDelete={handleDelete}
               />

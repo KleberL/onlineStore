@@ -52,7 +52,7 @@ const Card = ({ data }) => {
         </span>
         <img
           className="w-full h-full object-cover rounded-lg"
-          src={data.images[0]}
+          src={data.image}
           alt={data.title}
         />
         {renderIcon(data.id)}
