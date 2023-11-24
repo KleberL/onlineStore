@@ -4,7 +4,7 @@ import { ShoppingBagIcon } from '@heroicons/react/24/solid';
 import { ShoppingCartContext } from "../../Context";
 
 const Navbar = () => {
-  const context = useContext(ShoppingCartContext);
+  const {count, setSearchByCategory } = useContext(ShoppingCartContext);
   const activeSytle = 'underline underline-offset-4';
 
   return (
@@ -18,6 +18,7 @@ const Navbar = () => {
         <li>
             <NavLink 
                 to='/'
+                onClick={() => setSearchByCategory()}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -26,7 +27,8 @@ const Navbar = () => {
         </li>
         <li>
             <NavLink 
-                to='/clothes'
+                to='/clothing'
+                onClick={() => setSearchByCategory('clothing')}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -36,6 +38,7 @@ const Navbar = () => {
         <li>
             <NavLink 
                 to='/electronics'
+                onClick={() => setSearchByCategory('electronics')}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -45,6 +48,7 @@ const Navbar = () => {
         <li>
             <NavLink 
                 to='/furniture'
+                onClick={() => setSearchByCategory('furniture')}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -54,6 +58,7 @@ const Navbar = () => {
         <li>
             <NavLink 
                 to='/toys'
+                onClick={() => setSearchByCategory('toys')}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -63,6 +68,7 @@ const Navbar = () => {
         <li>
             <NavLink 
                 to='/others'
+                onClick={() => setSearchByCategory('others')}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -103,7 +109,7 @@ const Navbar = () => {
         </li>
         <li className="flex items-center">
             <ShoppingBagIcon className="h-6 w-6 text-black"></ShoppingBagIcon>
-            <div>{context.count}</div>
+            <div>{count}</div>
         </li>
       </ul>
     </nav>
