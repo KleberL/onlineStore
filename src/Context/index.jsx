@@ -34,7 +34,6 @@ export const ShoppingCartProvider = ({ children }) => {
 
     // Get Products by Category
     const [searchByCategory, setSearchByCategory] = useState(null);
-    console.log(searchByCategory)
 
     useEffect(() => {
         fetch('https://api.escuelajs.co/api/v1/products')
@@ -75,7 +74,6 @@ export const ShoppingCartProvider = ({ children }) => {
         if(!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null, items, searchByTitle ,searchByCategory));
       }, [items, searchByTitle, searchByCategory])
 
-    console.log(filteredItems)      
 
     return(
         <ShoppingCartContext.Provider value={{
