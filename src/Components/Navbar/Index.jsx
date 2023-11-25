@@ -4,7 +4,7 @@ import { ShoppingBagIcon } from '@heroicons/react/24/solid';
 import { ShoppingCartContext } from "../../Context";
 
 const Navbar = () => {
-  const {count, setSearchByCategory } = useContext(ShoppingCartContext);
+  const {cartProducts, setSearchByCategory } = useContext(ShoppingCartContext);
   const activeSytle = 'underline underline-offset-4';
 
   return (
@@ -27,8 +27,8 @@ const Navbar = () => {
         </li>
         <li>
             <NavLink 
-                to='/clothing'
-                onClick={() => setSearchByCategory('clothing')}
+                to='/clothes'
+                onClick={() => setSearchByCategory('clothes')}
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
                 }>
@@ -109,7 +109,7 @@ const Navbar = () => {
         </li>
         <li className="flex items-center">
             <ShoppingBagIcon className="h-6 w-6 text-black"></ShoppingBagIcon>
-            <div>{count}</div>
+            <div>{cartProducts.length}</div>
         </li>
       </ul>
     </nav>

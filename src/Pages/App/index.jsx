@@ -6,14 +6,14 @@ import MyOrder from '../MyOrder';
 import MyOrders from '../MyOrders';
 import SignIn from '../SignIn';
 import NotFound from '../NotFound';
-import Navbar from '../../Components/NavBar/Index';
+import Navbar from '../../Components/Navbar';
 import CheckoutSideMenu from '../../Components/CheckoutSideMenu';
 import './App.css'
 
 const AppRoutes = () => {
   let routes = useRoutes([
     { path: '/', element: <Home/> },
-    { path: '/clothing', element: <Home/> },
+    { path: '/clothes', element: <Home/> },
     { path: '/electronics', element: <Home/> },
     { path: '/furniture', element: <Home/> },
     { path: '/toys', element: <Home/> },
