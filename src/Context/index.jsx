@@ -1,137 +1,135 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect } from 'react'
 
-export const ShoppingCartContext = createContext();
+export const ShoppingCartContext = createContext()
 
 export const initializeLocalStorage = () => {
-    const accountInLocalStorage = localStorage.getItem('account');
-    const signOutInLocalStorage = localStorage.getItem('account');
-    let parsedAccount;
-    let parsedSignOut;
-    
-    if(!accountInLocalStorage) {
-        localStorage.setItem('account', JSON.stringify({}));
-        parsedAccount = {};
-    } else {
-        parsedAccount = JSON.parse(accountInLocalStorage)
-    }
-    
-    if(!signOutInLocalStorage) {
-        localStorage.setItem('sign-out', JSON.stringify(false));
-        parsedSignOut = false;
-    } else {
-        parsedSignOut = JSON.parse(signOutInLocalStorage)
-    }
-};
+  const accountInLocalStorage = localStorage.getItem('account')
+  const signOutInLocalStorage = localStorage.getItem('sign-out')
+  let parsedAccount
+  let parsedSignOut
 
-export const ShoppingCartProvider = ({ children }) => {
-    // My account
-    const [account, setAccount] = useState({});
+  if (!accountInLocalStorage) {
+    localStorage.setItem('account', JSON.stringify({}))
+    parsedAccount = {}
+  } else {
+    parsedAccount = JSON.parse(accountInLocalStorage)
+  }
 
-    // Sign out
-    const [signOut, setSignOut] = useState(false);
+  if (!signOutInLocalStorage) {
+    localStorage.setItem('sign-out', JSON.stringify(false))
+    parsedSignOut = false
+  } else {
+    parsedSignOut = JSON.parse(signOutInLocalStorage)
+  }
+}
 
-    // Shopping Cart - Increment quantity
-    const [count, setCount] = useState(0);
+export const ShoppingCartProvider = ({children}) => {
+  // My account
+  const [account, setAccount] = useState({})
 
-    // Product Detail - Open/Close
-    const [isProductDetailOpen, setIsProductDetailOpen] = useState(false);
-    const openProductDetail = () => setIsProductDetailOpen(true);
-    const closeProductDetail = () => setIsProductDetailOpen(false);
+  // Sign out
+  const [signOut, setSignOut] = useState(false)
 
-    // Checkout Side Menu - Open/Close
-    const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] = useState(false);
-    const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true);
-    const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false);
+  // Shopping Cart · Increment quantity
+  const [count, setCount] = useState(0)
 
-    // Product Detail - Show product
-    const [productToShow, setProductToShow] = useState({});
+  // Product Detail · Open/Close
+  const [isProductDetailOpen, setIsProductDetailOpen] = useState(false)
+  const openProductDetail = () => setIsProductDetailOpen(true)
+  const closeProductDetail = () => setIsProductDetailOpen(false)
 
-    // Shopping Cart - Add products to cart
-    const [cartProducts, setCartProducts] = useState([]);
+  // Checkout Side Menu · Open/Close
+  const [isCheckoutSideMenuOpen, setIsCheckoutSideMenuOpen] = useState(false)
+  const openCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(true)
+  const closeCheckoutSideMenu = () => setIsCheckoutSideMenuOpen(false)
 
-    // Shopping Cart - Order
-    const [order, setOrder] = useState([]);
+  // Product Detail · Show product
+  const [productToShow, setProductToShow] = useState({})
 
-    // Get Products
-    const [items, setItems] = useState(null);
-    const [filteredItems, setFilteredItems] = useState(null);
+  // Shopping Cart · Add products to cart
+  const [cartProducts, setCartProducts] = useState([])
 
-    // Get Products by Title
-    const [searchByTitle, setSearchByTitle] = useState(null);
+  // Shopping Cart · Order
+  const [order, setOrder] = useState([])
 
-    // Get Products by Category
-    const [searchByCategory, setSearchByCategory] = useState(null);
+  // Get products
+  const [items, setItems] = useState(null)
+  const [filteredItems, setFilteredItems] = useState(null)
 
-    useEffect(() => {
-        fetch('https://api.escuelajs.co/api/v1/products')
-          .then(response => response.json())
-          .then(data => setItems(data))
-      }, [])
+  // Get products by title
+  const [searchByTitle, setSearchByTitle] = useState(null)
 
-    const filteredItemsByTitle = (items, searchByTitle) =>{
-        return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
-    }
+  // Get products by category
+  const [searchByCategory, setSearchByCategory] = useState(null)
 
-    const filteredItemsByCategory = (items, searchByCategory) =>{
-        return items?.filter(item => item.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
-    }
+  useEffect(() => {
+    fetch('https://api.escuelajs.co/api/v1/products')
+      .then(response => response.json())
+      .then(data => setItems(data))
+  }, [])
 
-    const filterBy = (searchByType, items, searchByTitle, searchByCategory) => {
-        if(searchByType === 'BY_TITLE'){
-            return filteredItemsByTitle(items, searchByTitle)
-        }
+  const filteredItemsByTitle = (items, searchByTitle) => {
+    return items?.filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+  }
 
-        if(searchByType === 'BY_CATEGORY'){
-            return filteredItemsByCategory(items, searchByCategory)
-        }
-        
-        if(searchByType === 'BY_TITLE_AND_CATEGORY'){
-            return filteredItemsByCategory(items, searchByCategory).filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
-        } 
+  const filteredItemsByCategory = (items, searchByCategory) => {
+    return items?.filter(item => item.category.name.toLowerCase().includes(searchByCategory.toLowerCase()))
+  }
 
-        if(!searchByType){
-            return items
-        }
+  const filterBy = (searchType, items, searchByTitle, searchByCategory) => {
+    if (searchType === 'BY_TITLE') {
+      return filteredItemsByTitle(items, searchByTitle)
     }
 
-    useEffect(() => {
-        if(searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_TITLE_AND_CATEGORY', items, searchByTitle, searchByCategory));
-        if(searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory));
-        if(!searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_CATEGORY', items, searchByTitle ,searchByCategory));
-        if(!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null, items, searchByTitle ,searchByCategory));
-      }, [items, searchByTitle, searchByCategory])
+    if (searchType === 'BY_CATEGORY') {
+      return filteredItemsByCategory(items, searchByCategory)
+    }
 
+    if (searchType === 'BY_TITLE_AND_CATEGORY') {
+      return filteredItemsByCategory(items, searchByCategory).filter(item => item.title.toLowerCase().includes(searchByTitle.toLowerCase()))
+    }
 
-    return(
-        <ShoppingCartContext.Provider value={{
-            count,
-            setCount,
-            openProductDetail,
-            closeProductDetail, 
-            isProductDetailOpen,
-            productToShow,
-            setProductToShow,
-            cartProducts,
-            setCartProducts,
-            openCheckoutSideMenu,
-            closeCheckoutSideMenu,
-            isCheckoutSideMenuOpen,
-            order,
-            setOrder,
-            items,
-            setItems,
-            searchByTitle,
-            setSearchByTitle,
-            filteredItems,
-            setFilteredItems,
-            searchByCategory,
-            setSearchByCategory,
-            account,
-            setAccount,
-            signOut,
-            setSignOut,
-        }}>
-            {children}
-        </ShoppingCartContext.Provider>
-    );
-};
+    if (!searchType) {
+      return items
+    }
+  }
+
+  useEffect(() => {
+    if (searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_TITLE_AND_CATEGORY', items, searchByTitle, searchByCategory))
+    if (searchByTitle && !searchByCategory) setFilteredItems(filterBy('BY_TITLE', items, searchByTitle, searchByCategory))
+    if (!searchByTitle && searchByCategory) setFilteredItems(filterBy('BY_CATEGORY', items, searchByTitle, searchByCategory))
+    if (!searchByTitle && !searchByCategory) setFilteredItems(filterBy(null, items, searchByTitle, searchByCategory))
+  }, [items, searchByTitle, searchByCategory])
+
+  return (
+    <ShoppingCartContext.Provider value={{
+      count,
+      setCount,
+      openProductDetail,
+      closeProductDetail,
+      isProductDetailOpen,
+      productToShow,
+      setProductToShow,
+      cartProducts,
+      setCartProducts,
+      isCheckoutSideMenuOpen,
+      openCheckoutSideMenu,
+      closeCheckoutSideMenu,
+      order,
+      setOrder,
+      items,
+      setItems,
+      searchByTitle,
+      setSearchByTitle,
+      filteredItems,
+      searchByCategory,
+      setSearchByCategory,
+      account,
+      setAccount,
+      signOut,
+      setSignOut
+    }}>
+      {children}
+    </ShoppingCartContext.Provider>
+  )
+}
