@@ -7,6 +7,12 @@ const Navbar = () => {
   const {cartProducts, setSearchByCategory } = useContext(ShoppingCartContext);
   const activeSytle = 'underline underline-offset-4';
 
+  const handleSignOut = () => {
+    const stringifiedSignOut = JSON.stringify(true);
+    localStorage.setItem('sign-out', stringifiedSignOut);
+    context.setSignOut(true)
+  };
+
   return (
     <nav className='flex justify-between items-center fixed z-10 top-0 w-full py-5 px-8 text-sm font-light'>
       <ul className='flex items-center gap-3'>
@@ -103,8 +109,10 @@ const Navbar = () => {
                 to='/sign-in'
                 className={({ isActive}) =>
                     isActive ? activeSytle : undefined
-                }>
-                Sign In
+                }
+                onClick={() => handleSignOut()}
+            >
+                Sign Out
             </NavLink>
         </li>
         <li className="flex items-center">
